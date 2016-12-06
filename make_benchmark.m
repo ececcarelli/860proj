@@ -16,3 +16,4 @@ lambdas = paramsel_loocvprimal(X, y, opt);
 opt.paramsel.lambdas = lambdas.lambdas;
 opt.newprop('t0',t0);
 opt.newprop('epochs',epochs);
+opt.newprop('m', N/2);
