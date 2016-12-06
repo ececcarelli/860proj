@@ -47,7 +47,7 @@ count = cfr.count;
 t0 = cfr.t0;
 m = cfr.m;
 
-mu = zeros(d); % average of gradients % CHECK DIM
+mu = zeros(d,1); % average of gradients % CHECK DIM
 for idx = 1:n
     mu = mu + rls_grad(W, X, y, lambda, idx); 
 end
@@ -61,7 +61,7 @@ while iter < m,
     idx = seq(iter);
     
     %% Stepsize
-    eta = 1.0/(lambda*(count + t0)); % decaying step size
+    eta = 1.0/(count + t0); % decaying step size
     
     %% Update Equations
     W = W - eta * (rls_grad(W, X, y, lambda, idx) - rls_grad(W_last, X, y, lambda, idx) + mu); % CHECK SIGN ON ETA
@@ -84,7 +84,7 @@ end
 function[g] = rls_grad(W, X, y, lambda, idx)
     xt = X(idx,:);
     r = y(idx,:); 
-    g = (W'*xt - r)*xt + lambda*W;
+    g = (xt'*(xt*W - r) + lambda*W);
 end
 
 

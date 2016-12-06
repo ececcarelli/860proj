@@ -36,10 +36,11 @@ T = size(y,2);
 
 opt.newprop('cfr', struct());
 opt.cfr.W = zeros(d,T);
+opt.cfr.W_last = zeros(d,T);
 opt.cfr.W_sum = zeros(d,T);
 opt.cfr.count = 0;
 opt.cfr.t0 = opt.t0;
-opt.cfr.m = m;
+opt.cfr.m = opt.m;
 opt.cfr.acc_last = [];
 opt.cfr.acc_avg = [];
 
