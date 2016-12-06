@@ -51,12 +51,12 @@ while iter < n,
     idx = seq(iter);
     
     %% Stepsize
-    eta = 1.0/(lambda*(count + t0)); % decaying step size
+    eta = 1.0/((count + t0)); % decaying step size
     
     %% Update Equations
     xt = X(idx,:);
-    r = y(idx,:); 
-    W = W + eta*(r - W'*xt)*xt;
+    r = y(idx,:);
+    W = W - eta*(-2*xt'*(r - xt*W) +2*lambda*W);
 
     %% Averaging
     W_sum = W_sum + W;
