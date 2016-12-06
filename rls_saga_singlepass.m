@@ -66,7 +66,7 @@ while iter < n,
     W = u - 1/eta * sum(grad_table, 1)';
     u = u + (W - u) / n;
     idx = randi(n); % update random row of table
-    grad_table(idx, 1:d) = rls_grad(l2_prox(W, lambda), X, y, idx); 
+    grad_table(idx, 1:d) = rls_grad(l2_prox(W, lambda*n), X, y, idx); 
     
     %% Averaging
     W_sum = W_sum + W;
@@ -88,13 +88,13 @@ end
 function[g] = rls_grad(W, X, y, idx)
     xt = X(idx,:);
     r = y(idx,:); 
-    g = xt'*(xt*W - r) ;
+    g = 2 * xt'*(xt*W - r) ;
 end
 
 function[x] = l2_prox(x, lambda)
     n = norm(x);
     if n >= lambda
-        x = (1 - lambda / n) * x;
+        x = (1 + lambda / n) * x;
     end
 end
 

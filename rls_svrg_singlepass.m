@@ -47,7 +47,7 @@ count = cfr.count;
 t0 = cfr.t0;
 m = cfr.m;
 
-mu = zeros(d,1); % average of gradients % CHECK DIM
+mu = zeros(d,1); % average of gradients 
 for idx = 1:n
     mu = mu + rls_grad(W, X, y, lambda, idx); 
 end
@@ -84,7 +84,7 @@ end
 function[g] = rls_grad(W, X, y, lambda, idx)
     xt = X(idx,:);
     r = y(idx,:); 
-    g = (xt'*(xt*W - r) + lambda*W);
+    g = 2 * (xt'*(xt*W - r) + lambda*W);
 end
 
 

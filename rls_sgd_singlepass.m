@@ -57,7 +57,7 @@ while iter < n,
     xt = X(idx,:);
 
     r = y(idx,:); 
-    W = W - 2*eta*(xt'*(xt*W - r) + lambda*W);
+    W = W - eta*rls_grad(W, X, y, lambda, idx);
 
     %% Averaging
     W_sum = W_sum + W;
@@ -71,6 +71,12 @@ cfr.count = count;
 cfr.iter = iter;
 cfr.C = [];
 cfr.X = [];
+end
+
+function[g] = rls_grad(W, X, y, lambda, idx)
+    xt = X(idx,:);
+    r = y(idx,:); 
+    g = 2*(xt'*(xt*W - r) + lambda*W);
 end
 
 
