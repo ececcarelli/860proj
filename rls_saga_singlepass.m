@@ -1,4 +1,4 @@
-function [cfr] = rls_svrg_singlepass(X, y, opt)
+function [cfr] = rls_saga_singlepass(X, y, opt)
 % rls_sgd_singlepass(X,y,OPT)
 % utility function called by rls_svrg
 % computes a single pass for sgd algorithm, performing the 
