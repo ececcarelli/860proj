@@ -1,6 +1,6 @@
-function [cfr] = rls_sgd_singlepass(X, y, opt)
-% rls_sgd_singlepass(X,BY,OPT)
-% utility function called by rls_sgd
+function [cfr] = rls_svrg_singlepass(X, y, opt)
+% rls_sgd_singlepass(X,y,OPT)
+% utility function called by rls_svrg
 % computes a single pass for sgd algorithm, performing the 
 % gradient descent over a batch of training samples.
 %
@@ -14,6 +14,8 @@ function [cfr] = rls_sgd_singlepass(X, y, opt)
 %   fields that need to be added by hand
 %       -Xte
 %       -yte
+%       -m (update frequency)
+%       -t0
 %   fields with default values set through the defopt function:
 %		- singlelambda
 % 
@@ -23,7 +25,8 @@ function [cfr] = rls_sgd_singlepass(X, y, opt)
 % OUTPUT: structure with the following fields:
 % -W: matrix of coefficient vectors of rls estimator for each class
 % -W_sum: sum of the classifiers across iterations
-% -t0: stepsize parameter 
+% -t0: stepsize parameter
+% -m: update frequency
 % -count: number of iterations
 % -acc_last: accuracy of the solution computed in the last iteration
 % -acc_avg: average accuracy across iterations
@@ -38,26 +41,30 @@ lambda = opt.singlelambda(opt.paramsel.lambdas);
 cfr = opt.cfr;
 
 W = cfr.W;
+W_last = cfr.W_last;
 W_sum = cfr.W_sum;
 count = cfr.count;
 t0 = cfr.t0;
+m = cfr.m;
+
+mu = zeros(d); % average of gradients % CHECK DIM
+for idx = 1:n
+    mu = mu + rls_grad(W, X, y, lambda, idx); 
+end
+mu = mu / n;
 
 %% Initialization
 iter = 0;
-
-seq = randperm(n); 
-while iter < n,
+seq = randperm(m); 
+while iter < m,
     iter = iter + 1;
     idx = seq(iter);
     
     %% Stepsize
-    eta = 1.0/(count + t0); % decaying step size
+    eta = 1.0/(lambda*(count + t0)); % decaying step size
     
     %% Update Equations
-    xt = X(idx,:);
-
-    r = y(idx,:); 
-    W = W - 2*eta*(xt'*(xt*W - r) + lambda*W);
+    W = W - eta * (rls_grad(W, X, y, lambda, idx) - rls_grad(W_last, X, y, lambda, idx) + mu); % CHECK SIGN ON ETA
 
     %% Averaging
     W_sum = W_sum + W;
@@ -73,6 +80,12 @@ cfr.C = [];
 cfr.X = [];
 end
 
+
+function[g] = rls_grad(W, X, y, lambda, idx)
+    xt = X(idx,:);
+    r = y(idx,:); 
+    g = (W'*xt - r)*xt + lambda*W;
+end
 
 
 
