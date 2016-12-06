@@ -1,12 +1,12 @@
-function [cfr] = rls_pegasos_singlepass(X, bY, opt)
-% rls_pegasos_singlepass(X,BY,OPT)
-% utility function called by rls_pegasos
-% computes a single pass for pegasos algorithm, performing the stochastic
-% gradient descent over all training samples once.
+function [cfr] = rls_sgd_singlepass(X, y, opt)
+% rls_sgd_singlepass(X,BY,OPT)
+% utility function called by rls_sgd
+% computes a single pass for sgd algorithm, performing the 
+% gradient descent over a batch of training samples.
 %
 % INPUTS:
 % -X: input data matrix
-% -BY: binary coded labels matrix
+% -y: labels matrix
 % -OPT: structure of options with the following fields:
 %   fields that need to be set through previous gurls tasks:
 %		- paramsel.lambdas (set by the paramsel_* routines)
@@ -32,7 +32,7 @@ lambda = opt.singlelambda(opt.paramsel.lambdas);
 
 %% Inputs
 [n,d] = size(X); 
-[T] = size(bY,2);
+[T] = size(y,2);
 
 %% Initialization
 cfr = opt.cfr;
@@ -51,23 +51,17 @@ while iter < n,
     idx = seq(iter);
     
     %% Stepsize
+    eta = 1.0/(lambda*(count + t0)); % decaying step size
+    
     %% Update Equations
     xt = X(idx,:);
-    y_hat = (xt*W);
-    r = bY(idx,:) - y_hat;
-    %eta = 1.0/(lambda*(iter + t0));
-    eta = 1.0/(lambda*(count + t0));
-    W = (1 - lambda*eta)*W + eta*xt'*r;
+    r = y(idx,:); 
+    W = W + eta*(r - W'*xt)*xt;
 
-    %% Projection onto the ball with radius sqrt(T/lambda)
-    nW = norm(W,'fro');
-    if nW > sqrt(T/lambda)
-        W = (W/nW)*sqrt(T/lambda);
-    end
     %% Averaging
     W_sum = W_sum + W;
     count = count + 1;
-
+    
 end
 cfr.W = W;
 cfr.W_last = W;

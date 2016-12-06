@@ -1,5 +1,5 @@
-function [cfr] = rls_sgd(X,bY, opt)
-% rls_pegasos(X, bY, opt)
+function [cfr] = rls_sgd(X, y, opt)
+% rls_pegasos(X, y, opt)
 % computes a classifier for the primal formulation of RLS.
 % The optimization is carried out using a stochastic gradient descent algorithm.
 % The regularization parameter is set to the one found in opt.paramsel (set by the paramsel_* routines).
@@ -13,6 +13,7 @@ function [cfr] = rls_sgd(X,bY, opt)
 %   fields that need to be added by hand
 %       -Xte
 %       -yte
+%       -t0
 %   fields with default values set through the defopt function:
 %		- singlelambda
 % 
@@ -29,23 +30,20 @@ function [cfr] = rls_sgd(X,bY, opt)
 
 [n,d] = size(X);
 
-T = size(bY,2);
+T = size(y,2);
 
 opt.newprop('cfr', struct());
 opt.cfr.W = zeros(d,T);
 opt.cfr.W_sum = zeros(d,T);
 opt.cfr.count = 0;
+opt.cfr.t0 = opt.t0;
 opt.cfr.acc_last = [];
 opt.cfr.acc_avg = [];
 
 
 % Run mulitple epochs
-for i = 1:opt.epochs,
-	if opt.cfr.count == 0
-		opt.cfr.t0 = ceil(norm(X(1,:))/sqrt(opt.singlelambda(opt.paramsel.lambdas)));
-		%fprintf('\n\tt0 is set to : %f\n', opt.cfr.t0);
-	end
-	opt.cfr = rls_pegasos_singlepass(X, bY, opt);
+for i = 1:opt.epochs
+	opt.cfr = rls_sgd_singlepass(X, y, opt);
 end	
 cfr = opt.cfr;
 cfr.W = opt.cfr.W_sum/opt.cfr.count;
