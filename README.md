@@ -10,4 +10,4 @@ Benchmark.m
 	
 
 MAKE POSTER – and present it
-MAKE REPORT
+MAKE REPORT\includegraphics[]{../../sample.png}
