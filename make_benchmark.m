@@ -7,7 +7,11 @@ function [X, y, opt] = make_benchmark(N, W_true, sig_X, sig_eps, lambda, t0, epo
 
     opt = gurls_defopt('standard');
     lambdas = paramsel_loocvprimal(X, y, opt);
-    opt.paramsel.lambdas = lambda;
+    if lambda==-1
+        opt.paramsel.lambdas = lambdas.lambdas;
+    else
+        opt.paramsel.lambdas = lambda;
+    end
     opt.newprop('t0',t0);
     opt.newprop('epochs',epochs);
     opt.newprop('m', m);
