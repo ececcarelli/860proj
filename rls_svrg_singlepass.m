@@ -46,6 +46,7 @@ W_sum = cfr.W_sum;
 count = cfr.count;
 t0 = cfr.t0;
 m = cfr.m;
+Ws = cfr.Ws;
 
 mu = zeros(d,1); % average of gradients 
 for idx = 1:n
@@ -69,6 +70,9 @@ while iter < m,
     %% Averaging
     W_sum = W_sum + W;
     count = count + 1;
+    
+    %% Update tables
+    Ws(count, :) = W;
     
 end
 cfr.W = W;

@@ -41,6 +41,7 @@ W = cfr.W;
 W_sum = cfr.W_sum;
 count = cfr.count;
 t0 = cfr.t0;
+Ws = cfr.Ws;
 
 %% Initialization
 iter = 0;
@@ -62,6 +63,9 @@ while iter < n,
     %% Averaging
     W_sum = W_sum + W;
     count = count + 1;
+    
+    %% Update tables
+    Ws(count, :) = W;
     
 end
 cfr.W = W;

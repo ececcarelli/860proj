@@ -44,6 +44,8 @@ opt.cfr.m = opt.m;
 opt.cfr.acc_last = [];
 opt.cfr.acc_avg = [];
 
+L = opt.epochs * opt.cfr.m;
+opt.cfr.Ws = zeros(L, d);
 
 % Run mulitple epochs
 for i = 1:opt.epochs

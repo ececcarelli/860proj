@@ -47,6 +47,8 @@ W_sum = cfr.W_sum;
 count = cfr.count;
 t0 = cfr.t0;
 
+Ws = cfr.Ws;
+
 %% Initialize grad table
 if cfr.count == 0,
     for idx = 1:n,
@@ -72,6 +74,9 @@ while iter < n,
     W_sum = W_sum + W;
     count = count + 1;
     
+    %% Update tables
+    Ws(count, :) = W;
+    
 end
 
 cfr.W = W;
@@ -80,6 +85,7 @@ cfr.grad_table = grad_table;
 cfr.W_sum = W_sum;
 cfr.count = count;
 cfr.iter = iter;
+cfr.Ws = Ws;
 cfr.C = [];
 cfr.X = [];
 end
