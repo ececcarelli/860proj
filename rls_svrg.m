@@ -43,17 +43,17 @@ opt.cfr.t0 = opt.t0;
 opt.cfr.m = opt.m;
 opt.cfr.acc_last = [];
 opt.cfr.acc_avg = [];
-opt.cfr.scores = zeros(opt.epochs,2);
+opt.cfr.scores = zeros((2*opt.epochs),2);
 lambda = opt.singlelambda(opt.paramsel.lambdas);
 
 L = opt.epochs * opt.cfr.m;
 opt.cfr.Ws = zeros(L, d);
 
 % Run mulitple epochs
-for i = 1:opt.epochs
+for i = 1:(2*opt.epochs)
 	opt.cfr = rls_svrg_singlepass(X, y, opt);
-    W = opt.cfr.W;
-    opt.cfr.scores(i,1) = i;
+    W = opt.cfr.W_sum/opt.cfr.count;
+    opt.cfr.scores(i,1) = i*opt.m;
     opt.cfr.scores(i,2) = (X*W - y)'*(X*W - y) + lambda*W'*W;
 end	
 cfr = opt.cfr;

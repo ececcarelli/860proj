@@ -1,5 +1,8 @@
 function [scores, cfrs] = learning_curve_input(X, y, opt,algorithm,max_epochs, num_trials)
 scores = zeros(max_epochs,2);
+if strcmp(algorithm,'svrg')
+    scores = zeros(2*max_epochs,2);
+end
 opt.epochs = max_epochs;
 cfrs = cell(num_trials, 1);
 for m=1:num_trials
