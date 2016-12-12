@@ -62,7 +62,7 @@ while iter < m,
     idx = seq(iter);
     
     %% Stepsize
-    eta = 1.0/(count + t0); % decaying step size
+    eta = 1.0/(t0); % decaying step size
     
     %% Update Equations
     W = W - eta * (rls_grad(W, X, y, lambda, idx) - rls_grad(W_last, X, y, lambda, idx) + mu); % CHECK SIGN ON ETA

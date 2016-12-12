@@ -1,4 +1,4 @@
-function [scores, cfrs] = hp_plot_input(X, y, algorithm,param_name, param_start, param_end, tick_num, given_epochs, given_lambda, given_t0, given_m, num_trials, convergence_eps)
+function [scores, cfrs, yAxis, xAxis] = hp_plot_input(X, y, algorithm,param_name, param_start, param_end, tick_num, given_epochs, given_lambda, given_t0, given_m, num_trials, convergence_eps)
 %param_names: lambda, spec_lambda, t0, m, epochs (use prev function)
 
 opt = gurls_defopt('standard');
@@ -14,11 +14,16 @@ opt.newprop('m', given_m);
 
 if strcmp(param_name,'epochs')
     [scores, cfrs] = learning_curve_input(X, y, opt,algorithm,given_epochs, num_trials);
+    yAxis = 'Function value';
+    xAxis = 'Iterations (epochs)';
 else
-
+    yAxis = 'Epochs until convergence';
     if strcmp(param_name,'spec_lambda')
         param_start = param_start*opt.singlelambda(opt.paramsel.lambdas);
         param_end = param_end*opt.singlelambda(opt.paramsel.lambdas);
+        xAxis = 'Value of lambda';
+    else
+        xAxis = ['Value of ' param_name];
     end
     param_range = param_end - param_start;
     tick_size = param_range/tick_num;

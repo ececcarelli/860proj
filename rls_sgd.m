@@ -50,7 +50,8 @@ opt.cfr.Ws = zeros(L, d);
 for i = 1:opt.epochs
 	opt.cfr = rls_sgd_singlepass(X, y, opt);
     opt.cfr.scores(i,1) = i;
-    opt.cfr.scores(i,2) = (X*opt.cfr.W - y)'*(X*opt.cfr.W - y) + lambda*opt.cfr.W'*opt.cfr.W;
+    W = opt.cfr.W;
+    opt.cfr.scores(i,2) = (X*W - y)'*(X*W - y) + lambda*W'*W;
 end	
 cfr = opt.cfr;
 cfr.W = opt.cfr.W_sum/opt.cfr.count;
