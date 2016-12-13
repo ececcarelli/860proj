@@ -3,12 +3,12 @@ opt.epochs = max_epochs;
 cfrs = cell(num_trials, 1);
 for m=1:num_trials
     if strcmp(algorithm,'sgd')
-        opt.epochs = max_epochs * opt.m / size(X, 1);
+%         opt.epochs = max_epochs * opt.m / size(X, 1);
         cfr = rls_sgd(X,y,opt);
     elseif strcmp(algorithm,'svrg')
         cfr = rls_svrg(X,y,opt);
     elseif strcmp(algorithm,'saga')
-        opt.epochs = max_epochs * opt.m / size(X, 1);
+%         opt.epochs = max_epochs * opt.m / size(X, 1);
         cfr = rls_saga(X,y,opt);
     end  
     cfrs{m} = cfr;
