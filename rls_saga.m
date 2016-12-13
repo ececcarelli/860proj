@@ -41,6 +41,7 @@ opt.cfr.count = 0;
 opt.cfr.t0 = opt.t0;
 opt.cfr.acc_last = [];
 opt.cfr.acc_avg = [];
+opt.cfr.gcount = 0;
 
 
 % Keep track of running values

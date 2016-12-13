@@ -2,7 +2,7 @@ function[rslt] = plot_learning_curves(X,y,opt,algorithms,max_epochs,num_trials,t
     rslt = cell(size(algorithms,2), 1);
 %     figure
     for i =1:size(algorithms,2)
-        [scores, cfr] = learning_curve_input(X, y, opt,algorithms(i),max_epochs, num_trials);
+        cfr = run_algo(X, y, opt,algorithms(i),max_epochs, num_trials);
         rslt{i} = cfr;
 %         if use_log
 %             plot(scores(:,1),log(scores(:,2)))

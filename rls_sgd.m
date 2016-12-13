@@ -37,21 +37,18 @@ opt.cfr.W = zeros(d,T);
 opt.cfr.W_sum = zeros(d,T);
 opt.cfr.count = 0;
 opt.cfr.t0 = opt.t0;
+opt.cfr.gcount = 0;
 opt.cfr.acc_last = [];
 opt.cfr.acc_avg = [];
-opt.cfr.scores = zeros(opt.epochs,2);
 lambda = opt.singlelambda(opt.paramsel.lambdas);
 
 L = opt.epochs * n;
 opt.cfr.Ws = zeros(L, d);
 
-
 % Run mulitple epochs
 for i = 1:opt.epochs
 	opt.cfr = rls_sgd_singlepass(X, y, opt);
-    opt.cfr.scores(i,1) = i*n;
     W = opt.cfr.W_sum/opt.cfr.count;
-    opt.cfr.scores(i,2) = (X*W - y)'*(X*W - y) + lambda*W'*W;
 end	
 cfr = opt.cfr;
 cfr.W = opt.cfr.W_sum/opt.cfr.count;

@@ -42,6 +42,7 @@ W_sum = cfr.W_sum;
 count = cfr.count;
 t0 = cfr.t0;
 Ws = cfr.Ws;
+gcount = cfr.gcount;
 
 %% Initialization
 iter = 0;
@@ -59,6 +60,7 @@ while iter < n,
 
     r = y(idx,:); 
     W = W - eta*rls_grad(W, X, y, lambda, idx);
+    gcount = gcount + 1;
 
     %% Averaging
     W_sum = W_sum + W;
@@ -72,6 +74,7 @@ cfr.W = W;
 cfr.W_last = W;
 cfr.W_sum = W_sum;
 cfr.count = count;
+cfr.gcount = gcount;
 cfr.iter = iter;
 cfr.Ws = Ws;
 cfr.C = [];

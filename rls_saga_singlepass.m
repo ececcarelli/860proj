@@ -45,6 +45,7 @@ u = cfr.u;
 grad_table = cfr.grad_table;
 W_sum = cfr.W_sum;
 count = cfr.count;
+gcount = cfr.gcount;
 t0 = cfr.t0;
 
 Ws = cfr.Ws;
@@ -54,6 +55,7 @@ if cfr.count == 0,
     for idx = 1:n,
         grad_table(idx, 1:d) = rls_grad(W, X, y, lambda, idx); 
     end
+    gcount = gcount + n;
 end
 
 %% Initialization
@@ -68,7 +70,8 @@ while iter < n,
     W = u - 1/eta * sum(grad_table, 1)';
     u = u + (W - u) / n;
     idx = randi(n); % update random row of table
-    grad_table(idx, 1:d) = rls_grad(W, X, y, lambda, idx); 
+    grad_table(idx, 1:d) = rls_grad(W, X, y, lambda, idx);
+    gcount = gcount + 1;
     
     %% Averaging
     W_sum = W_sum + W;
@@ -84,6 +87,7 @@ cfr.u = u;
 cfr.grad_table = grad_table;
 cfr.W_sum = W_sum;
 cfr.count = count;
+cfr.gcount = gcount;
 cfr.iter = iter;
 cfr.Ws = Ws;
 cfr.C = [];

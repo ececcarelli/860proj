@@ -44,6 +44,7 @@ W = cfr.W;
 W_last = cfr.W_last;
 W_sum = cfr.W_sum;
 count = cfr.count;
+gcount = cfr.gcount;
 t0 = cfr.t0;
 m = cfr.m;
 Ws = cfr.Ws;
@@ -52,6 +53,7 @@ mu = zeros(d,1); % average of gradients
 for idx = 1:n
     mu = mu + rls_grad(W, X, y, lambda, idx); 
 end
+gcount = gcount + n;
 mu = mu / n;
 
 %% Initialization
@@ -66,7 +68,8 @@ while iter < m,
     
     %% Update Equations
     W = W - eta * (rls_grad(W, X, y, lambda, idx) - rls_grad(W_last, X, y, lambda, idx) + mu); % CHECK SIGN ON ETA
-
+    gcount = gcount + 2;
+    
     %% Averaging
     W_sum = W_sum + W;
     count = count + 1;
@@ -80,6 +83,7 @@ cfr.Ws = Ws;
 cfr.W_last = W;
 cfr.W_sum = W_sum;
 cfr.count = count;
+cfr.gcount = gcount;
 cfr.iter = iter;
 cfr.C = [];
 cfr.X = [];
