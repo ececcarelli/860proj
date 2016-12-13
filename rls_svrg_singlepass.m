@@ -76,6 +76,7 @@ while iter < m,
     
 end
 cfr.W = W;
+cfr.Ws = Ws;
 cfr.W_last = W;
 cfr.W_sum = W_sum;
 cfr.count = count;

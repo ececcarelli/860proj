@@ -73,6 +73,7 @@ cfr.W_last = W;
 cfr.W_sum = W_sum;
 cfr.count = count;
 cfr.iter = iter;
+cfr.Ws = Ws;
 cfr.C = [];
 cfr.X = [];
 end

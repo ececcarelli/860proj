@@ -75,7 +75,7 @@ while iter < n,
     count = count + 1;
     
     %% Update tables
-    Ws(count, :) = W;
+    Ws(count, :) = W; 
     
 end
 
