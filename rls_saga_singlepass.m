@@ -46,6 +46,7 @@ grad_table = cfr.grad_table;
 W_sum = cfr.W_sum;
 count = cfr.count;
 gcount = cfr.gcount;
+gcounts = cfr.gcounts;
 t0 = cfr.t0;
 
 Ws = cfr.Ws;
@@ -79,6 +80,7 @@ while iter < n,
     
     %% Update tables
     Ws(count, :) = W; 
+    gcounts(count) = gcount; 
     
 end
 
@@ -88,6 +90,7 @@ cfr.grad_table = grad_table;
 cfr.W_sum = W_sum;
 cfr.count = count;
 cfr.gcount = gcount;
+cfr.gcounts = gcounts;
 cfr.iter = iter;
 cfr.Ws = Ws;
 cfr.C = [];

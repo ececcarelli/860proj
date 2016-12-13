@@ -47,17 +47,12 @@ opt.cfr.gcount = 0;
 % Keep track of running values
 L = opt.epochs * n;
 opt.cfr.Ws = zeros(L, d);
-
-opt.cfr.scores = zeros(opt.epochs,2);
+opt.cfr.gcounts = zeros(L, 1);
 lambda = opt.singlelambda(opt.paramsel.lambdas);
 
 % Run mulitple epochs
 for i = 1:opt.epochs
 	opt.cfr = rls_saga_singlepass(X, y, opt);    
-    opt.cfr.scores(i,1) = i*n;
-    W = opt.cfr.W_sum/opt.cfr.count;
-    opt.cfr.scores(i,2) = (X*W - y)'*(X*W - y) + lambda*W'*W;
-    
 end	
 cfr = opt.cfr;
 cfr.W = opt.cfr.W_sum/opt.cfr.count;
