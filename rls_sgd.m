@@ -44,6 +44,7 @@ lambda = opt.singlelambda(opt.paramsel.lambdas);
 
 L = opt.epochs * n;
 opt.cfr.Ws = zeros(L, d);
+opt.cfr.gcounts = zeros(L, 1);
 
 % Run mulitple epochs
 for i = 1:opt.epochs

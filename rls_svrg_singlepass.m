@@ -44,6 +44,7 @@ W = cfr.W;
 W_last = cfr.W_last;
 W_sum = cfr.W_sum;
 count = cfr.count;
+gcounts = cfr.gcounts;
 gcount = cfr.gcount;
 t0 = cfr.t0;
 m = cfr.m;
@@ -58,7 +59,7 @@ mu = mu / n;
 
 %% Initialization
 iter = 0;
-seq = randperm(m); 
+seq = mod(randperm(m), n) + 1; 
 while iter < m,
     iter = iter + 1;
     idx = seq(iter);
@@ -76,6 +77,7 @@ while iter < m,
     
     %% Update tables
     Ws(count, :) = W;
+    gcounts(count) = gcount;
     
 end
 cfr.W = W;
@@ -84,6 +86,7 @@ cfr.W_last = W;
 cfr.W_sum = W_sum;
 cfr.count = count;
 cfr.gcount = gcount;
+cfr.gcounts = gcounts;
 cfr.iter = iter;
 cfr.C = [];
 cfr.X = [];
