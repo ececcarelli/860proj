@@ -17,7 +17,7 @@ if strcmp(param_name,'epochs')
     yAxis = 'Function value';
     xAxis = 'Iterations (epochs)';
 else
-    yAxis = 'Epochs until convergence';
+    yAxis = 'Gradient computations until convergence';
     if strcmp(param_name,'spec_lambda')
         param_start = param_start*opt.singlelambda(opt.paramsel.lambdas);
         param_end = param_end*opt.singlelambda(opt.paramsel.lambdas);
@@ -55,9 +55,9 @@ else
             elseif strcmp(algorithm,'saga')
                 cfr = rls_saga(X,y,opt);
             end
-            conv_time = get_convergence_time(cfr.scores, convergence_eps); 
+            [T, gcount] = gradients_to_convergence(X, y, cfr, convergence_eps); 
             cfrs{m, i} = cfr;
-            trial_scores(i,2) = conv_time;
+            trial_scores(i,2) = gcount;
         end
         scores = scores + trial_scores/num_trials;
     end
