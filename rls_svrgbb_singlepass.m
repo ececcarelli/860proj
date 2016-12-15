@@ -63,7 +63,7 @@ G = G / n;
 
 %% Stepsize
 if count < 1
-    eta = 1/n;
+    eta = 1.0/(t0); 
 else
     delta_G = G-G_last;
     eta = 1/m * (W_tilde - W_last)' * (W_tilde - W_last) / ((W_tilde - W_last)' * delta_G); % BB

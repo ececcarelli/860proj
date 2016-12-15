@@ -10,6 +10,9 @@ for m=1:num_trials
     elseif strcmp(algorithm,'saga')
 %         opt.epochs = max_epochs * opt.m / size(X, 1);
         cfr = rls_saga(X,y,opt);
+    elseif strcmp(algorithm,'svrgbb')
+%         opt.epochs = max_epochs * opt.m / size(X, 1);
+        cfr = rls_svrgbb(X,y,opt);
     end  
     cfrs{m} = cfr;
 %     size(scores)
