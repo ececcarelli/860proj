@@ -1,4 +1,4 @@
-function [cfr] = rls_svrg_singlepass(X, y, opt)
+function [cfr] = rls_svrgbb_singlepass(X, y, opt)
 % rls_sgd_singlepass(X,y,OPT)
 % utility function called by rls_svrg
 % computes a single pass for sgd algorithm, performing the 
@@ -41,7 +41,8 @@ lambda = opt.singlelambda(opt.paramsel.lambdas);
 cfr = opt.cfr;
 
 W = cfr.W;
-W_last = cfr.W_last;
+W_last = cfr.W_tilde;
+G_last =cfr.grad;
 W_sum = cfr.W_sum;
 count = cfr.count;
 gcounts = cfr.gcounts;
@@ -49,14 +50,28 @@ gcount = cfr.gcount;
 t0 = cfr.t0;
 m = cfr.m;
 Ws = cfr.Ws;
+etas = cfr.etas;
 
-mu = zeros(d,1); % average of gradients 
+W_tilde = W;
+
+G = zeros(d,1); % average of gradients 
 for idx = 1:n
-    mu = mu + rls_grad(W, X, y, lambda, idx); 
+    G = G + rls_grad(W_tilde, X, y, lambda, idx); 
 end
 gcount = gcount + n;
-mu = mu / n;
+G = G / n;
 
+%% Stepsize
+if count < 1
+    eta = 1/n;
+else
+    delta_G = G-G_last;
+    eta = 1/m * (W_tilde - W_last)' * (W_tilde - W_last) / ((W_tilde - W_last)' * delta_G); % BB
+    if log(abs(delta_G)) == -Inf  % if eta = -Inf, then use last step size
+        eta = 0;%etas(floor(count / m));
+    end
+end
+etas(floor(count / m) + 1) = eta;
 %% Initialization
 iter = 0;
 seq = mod(randperm(m), n) + 1; 
@@ -64,11 +79,8 @@ while iter < m,
     iter = iter + 1;
     idx = seq(iter);
     
-    %% Stepsize
-    eta = 1.0/(t0); 
-    
     %% Update Equations
-    W = W - eta * (rls_grad(W, X, y, lambda, idx) - rls_grad(W_last, X, y, lambda, idx) + mu); % CHECK SIGN ON ETA
+    W = W - eta * (rls_grad(W, X, y, lambda, idx) - rls_grad(W_tilde, X, y, lambda, idx) + G); % CHECK SIGN ON ETA
     gcount = gcount + 2;
     
     %% Averaging
@@ -82,7 +94,10 @@ while iter < m,
 end
 cfr.W = W;
 cfr.Ws = Ws;
+cfr.etas = etas;
 cfr.W_last = W;
+cfr.grad = G;
+cfr.W_tilde = W_tilde;
 cfr.W_sum = W_sum;
 cfr.count = count;
 cfr.gcount = gcount;

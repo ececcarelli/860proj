@@ -65,10 +65,10 @@ while iter < n,
     iter = iter + 1;
     
     %% Stepsize
-    eta = n; % decaying step size
+    eta = 1. / t0; % decaying step size
     
     %% Update Equations
-    W = u - 1/eta * sum(grad_table, 1)';
+    W = u - eta * sum(grad_table, 1)';
     u = u + (W - u) / n;
     idx = randi(n); % update random row of table
     grad_table(idx, 1:d) = rls_grad(W, X, y, lambda, idx);
