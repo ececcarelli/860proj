@@ -8,7 +8,7 @@ for i =1:size(algorithms,2)
     rslt{i} = cfr;
     if use_log
 %         plot(log(evaluate_obj_fun(X, y, rslt{i}{1}.Ws, 0) - min_err))
-        plot(rslt{i}{1}.gcounts,log(evaluate_obj_fun(X, y, rslt{i}{1}.Ws, 0) - min_err))
+        plot(rslt{i}{1}.gcounts,log10(evaluate_obj_fun(X, y, rslt{i}{1}.Ws, 0) - min_err))
     else
 %         plot(evaluate_obj_fun(X, y, rslt{i}{1}.Ws, 0) - min_err)
         plot(rslt{i}{1}.gcounts,evaluate_obj_fun(X, y, rslt{i}{1}.Ws, 0) - min_err)
