@@ -47,7 +47,8 @@ else
                 opt.m = param_value;
             end
 
-
+            plot_learning_curves(X,y,opt,{'sgd', 'svrg', 'saga'},20,1,'Iterations vs Value of Optimized Function',true)
+            a = b;
             if strcmp(algorithm,'sgd')
                 cfr = rls_sgd(X,y,opt);
             elseif strcmp(algorithm,'svrg')
