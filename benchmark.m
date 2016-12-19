@@ -1,6 +1,6 @@
 N = 1000;
-sig_X = 5;
-sig_eps = 4;
+sig_X = 50;
+sig_eps = 10;
 W_true = [10, -20, 50, -20, 10];
 W_true = randn(1,5) + ones(1,5);
 lambda = 0.;
@@ -8,7 +8,7 @@ lambda = 0.;
 epochs = 100;
 m = N / 2;
 % t0 =2.3368e+04;
-t0 = 10^4.5;
+t0 = 2.5131e+06;
 [X, y, opt] = make_benchmark(N, W_true, sig_X, sig_eps, lambda, t0, epochs, m);
 
 W_opt = ((X'*X + N*lambda * eye(size(W_true,2))) \ X'*y)' % true value
